@@ -25,13 +25,13 @@ function changeHighscore() {
     highscore.textContent = highscore.textContent;
   }
 }
+
 //Cambio del mensaje.
 function mensaje(mensaje) {
   text1.textContent = mensaje;
 }
-
-// Botón check
-btnCheck.addEventListener('click', function () {
+//Función que compara el guess con el secretNumber
+const validarGuess = function () {
   const guess = Number(guessNumber.value);
   //Validación del guess. Si no hay guess:
   if (!guess) {
@@ -39,7 +39,7 @@ btnCheck.addEventListener('click', function () {
   }
   //Si es igual, gana
   else if (guess == secretNumber) {
-    mensaje('🎉Felicitaciones!! 🎈✨ Has adivinado el número secreto!');
+    mensaje('Congratulations!! 🎈✨ You have guessed the secret number!');
     body.style.backgroundColor = '#2daa38';
     number.textContent = secretNumber;
     changeHighscore();
@@ -47,20 +47,27 @@ btnCheck.addEventListener('click', function () {
   //Si es diferente, se evalua con el ternario si es superior o inferior.
   else if (guess !== secretNumber) {
     score.textContent--;
-    mensaje(guess > secretNumber ? 'No, muy alto' : 'No, muy bajo');
+    mensaje(guess > secretNumber ? 'No, too high' : 'No, too low');
   }
   //Llegar a cero oportunidades
   if (score.textContent == 0) {
-    mensaje('🤡 Perdiste el juego!🤡');
+    mensaje('🤡 Yo lost the game!🤡');
     body.style.backgroundColor = '#9b3030';
+  }
+};
+
+// Se validan variables con el botón check o con enter.
+btnCheck.addEventListener('click', validarGuess);
+addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    validarGuess();
   }
 });
 
 // Botón Again
-
 btnAgain.addEventListener('click', function () {
   mensaje('Start guessing...');
-  score.textContent = '7'; // reestablece oportunidades
+  score.textContent = '5'; // reestablece oportunidades
   secretNumber = parseInt(Math.random() * 20) + 1; // reestablece numero aleatorio
   number.textContent = '?'; // reestablece interrogación
   guessNumber.value = ''; // reestablece input - caja grande donde pongo el número.
